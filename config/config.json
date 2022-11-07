@@ -1,7 +1,7 @@
 {
   "PROJECT_CONFIG": {
-    "PROJECT_NAME": "FastAPISQLModel",
-    "PROJECT_DESCRIPTION": "A Simple Application to demonstrate SQLModel with FastAPI",
+    "PROJECT_NAME": "ASMIS Brute force Protection",
+    "PROJECT_DESCRIPTION": "A part of ASMIS application which focuses on securing the endpoints from bruteforce login attacks.",
     "API_VERSION": "1.0.0",
     "API_VERSION_PATH": "/api/v1",
     "ACCESS_TOKEN_EXPIRE_MINUTES": 300,

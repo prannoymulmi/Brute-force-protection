@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # REST API Settings
 from config.models.ProjectSettings import ProjectSettings
+
 from api import api_router
 
 app = FastAPI(title=ProjectSettings.PROJECT_NAME,
@@ -19,13 +20,12 @@ app = FastAPI(title=ProjectSettings.PROJECT_NAME,
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-    "http://localhost",
-    "http://localhost:8080",
-],
+        "http://localhost",
+        "http://localhost:8080",
+    ],
     allow_credentials=True,
-    allow_methods=[""],
-    allow_headers=[""],
 )
 app.include_router(api_router, prefix=ProjectSettings.API_VERSION_PATH)
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8088, log_level='debug')
