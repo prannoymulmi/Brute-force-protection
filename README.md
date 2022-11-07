@@ -13,6 +13,7 @@ dependencies.
 ```
 
 ## References
-
+* Tutorial how to run fastapi in a local environment <a href=https://fastapi.tiangolo.com/tutorial/first-steps/ class="external-link" target="_blank">
+Fast API</a>.
 * A sample fullstack project to build a API using fast API <a href=https://github.com/scionoftech/FastAPI-Full-Stack-Samples class="external-link" target="_blank">
 Github</a>.
