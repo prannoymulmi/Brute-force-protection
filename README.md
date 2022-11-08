@@ -17,6 +17,15 @@ pip install -r requirements.txt
 ./venv/bin/python python -m uvicorn main:app --reload 
 ```
 
+### Valid Users to test from
+```json
+{
+  "username": "asd",
+  "password": "dasdasd"
+}
+```
+
+```bash
 # Run unit test
 ```bash
 python -m pytest tests/
