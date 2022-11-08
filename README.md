@@ -13,6 +13,12 @@ dependencies.
 4. pip install -r requirements.txt
 5. ./venv/bin/python python -m uvicorn main:app --reload 
 ```
+
+## Run unit test
+```
+python -m pytest tests/
+```
+
 ## Implemented security measures for ASMIS authentication system
 * The usernames and password inputs have a max length of 64 characters to prevent any kind of injection attacks.
 * Passwords are stored using argon2id hashing algorithms which are resilient against side-channel and GPU attacks.(Add Reference)
