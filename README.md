@@ -34,7 +34,7 @@ python -m pytest tests/
 ## Implemented security measures for ASMIS authentication system
 * The usernames and password inputs have a max length of 64 characters to prevent any kind of injection attacks.
 * Passwords are stored using argon2id hashing algorithms which are resilient against side-channel and GPU attacks.(Add Reference)
-* Using argon2 verify safe function to verify password instead of doing a string comparison. This helps secure the system from side channel attacks.
+* Used argon2 ```verify (hashed_password, to_be_verified_password)``` function to verify password instead of doing a string comparison. This helps secure the system from side channel attacks.
 * The login attempt is validated and counted up till 5 times, then the user is blocked for 10 minutes. 
 
 ## References
