@@ -1,21 +1,24 @@
-# Description
+# Description 
 This is a scoped project of the ASMIS system for the queens medical system, which only accounts for preventing brute force 
 password attacks that might occur for the login system. 
 
-## Creating a python virtual environment
+# Getting Started 🚀
+The Instructions to get the project up and running.
+
+## Creating a python virtual environment 🔧
 This is done using python3  so please make sure that python3 is installed before executing the commands to install the 
 dependencies.
 
-```
-1. python -m venv .
-2. source bin/activate
-3. pip -V  #Is used to check if the virtual environment is being used 
-4. pip install -r requirements.txt
-5. ./venv/bin/python python -m uvicorn main:app --reload 
+```bash
+python -m venv .
+source bin/activate
+pip -V  #Is used to check if the virtual environment is being used 
+pip install -r requirements.txt
+./venv/bin/python python -m uvicorn main:app --reload 
 ```
 
-## Run unit test
-```
+# Run unit test
+```bash
 python -m pytest tests/
 ```
 

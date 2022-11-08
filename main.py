@@ -1,4 +1,4 @@
-import uvicorn
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from config.models.ProjectSettings import ProjectSettings
 
 from api import api_router
+
 
 app = FastAPI(title=ProjectSettings.PROJECT_NAME,
               description=ProjectSettings.PROJECT_DESCRIPTION,
@@ -17,6 +18,7 @@ app = FastAPI(title=ProjectSettings.PROJECT_NAME,
               redoc_url=f"{ProjectSettings.API_VERSION_PATH}/redoc")
 
 # Middleware Settings
+# Used when there is a ASMIS frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -24,7 +26,13 @@ app.add_middleware(
         "http://localhost:8080",
     ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET, POST"],
 )
+
+# Router Inclusion
 app.include_router(api_router, prefix=ProjectSettings.API_VERSION_PATH)
+
+# Exception handling Inclusion
+# app.add_exception_handler(VerifyMismatchError, hash_password_mismatch_exception_handler)
+# app.add_exception_handler(VerificationError, hash_password_mismatch_exception_handler)
+# app.add_exception_handler(Exception, hash_password_mismatch_exception_handler)
