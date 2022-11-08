@@ -7,7 +7,6 @@ from config.models.ProjectSettings import ProjectSettings
 
 from api import api_router
 
-
 app = FastAPI(title=ProjectSettings.PROJECT_NAME,
               description=ProjectSettings.PROJECT_DESCRIPTION,
               version="1.0.0",

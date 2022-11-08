@@ -11,5 +11,8 @@
     "BACKEND_CORS_ORIGINS": [
       "*"
     ]
+  },
+  "DB_CONFIG": {
+    "DB_URL": "sqlite:///test.db"
   }
 }
