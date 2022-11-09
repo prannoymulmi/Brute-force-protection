@@ -11,21 +11,28 @@ from exceptions.UserNotFoundError import UserNotFoundError
 
 class UserRepository:
 
-    def create_user(self: str, username: str, password: str) -> Any:
+    def create_user(self: str, session: Session, username: str, password: str) -> Any:
         """ Add New User"""
         ph = PasswordHasher()
         hashed_password = ph.hash(password)
         # logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
         # logger = logging.getLogger(__name__)
         try:
-            with get_session() as db:
-                db_user = User(username=username,
-                               password=hashed_password,
-                               )
-                db.add(db_user)
-                db.commit()
-                db.refresh(db_user)
-                return db_user
+            db_user = User(username=username,
+                           password=hashed_password,
+                           )
+            session.add(db_user)
+            session.commit()
+            session.refresh(db_user)
+            return db_user
+        # with get_session() as db:
+        # db_user = User(username=username,
+        #                password=hashed_password,
+        #                )
+        # db.add(db_user)
+        # db.commit()
+        # db.refresh(db_user)
+        # return db_user
         except SQLAlchemyError as e:
             # logger.info(e)
             return None
