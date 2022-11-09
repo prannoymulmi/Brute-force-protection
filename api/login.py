@@ -26,8 +26,7 @@ async def authenticate_staff(*, session: Session = Depends(get_session), user: U
         # ur.create_user(user.username, user.password)
         db_user: User = ur.get_user_id(session, user.username)
         ph.verify(db_user.password, user.password)
-    except (VerifyMismatchError, InvalidHash, VerificationError, UserNotFoundError):
-
+    except (VerifyMismatchError, InvalidHash, VerificationError):
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
             content={"message": f"Oops! unauthorized"},

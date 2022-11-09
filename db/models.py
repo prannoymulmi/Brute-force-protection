@@ -9,16 +9,11 @@ from sqlmodel import SQLModel
 class User(SQLModel, table=True):
     username: str = Field(primary_key=True, index=True)
 
-    email: str = Field(sa_column=Column(String, unique=True, nullable=True))
+    email: str = Field(sa_column=Column(String, unique=True, nullable=False))
     password: str = Field(nullable=False)
+    modified_timestamp: datetime = Field(nullable=False,
+                                         default=datetime.utcnow())
+    login_counter: int = Field(nullable=False, default=0)
     created_timestamp: datetime = Field(nullable=False,
                                         default=datetime.utcnow())
 
-
-class UserCounter(SQLModel, table=True):
-    username: str = Field(primary_key=True, index=True)
-
-    counter: Optional[int] = Field(sa_column=Column(String, unique=True, nullable=True))
-
-    created_timestamp: datetime = Field(nullable=False,
-                                        default=datetime.utcnow())

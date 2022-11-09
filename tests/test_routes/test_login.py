@@ -15,6 +15,8 @@ from main import app
 Start Initializing Test with data in the in memory database
 """
 
+# Using fixtures to set up a test https://docs.pytest.org/en/6.2.x/fixture.html
+
 
 @pytest.fixture(name="session", autouse=True)
 def session_fixture():
@@ -61,7 +63,7 @@ def test_authenticate_users_when_authenticate_with_correct_credentials_then_requ
 def add_user_to_in_mem_db(password, session, username):
     ph = PasswordHasher()
     hashed_pw = ph.hash(password)
-    user = User(username=username, password=hashed_pw)
+    user = User(username=username, password=hashed_pw, email="test@test")
     session.add(user)
     session.commit()
 
@@ -71,7 +73,7 @@ def test_authenticate_users_when_authenticate_with_incorrect_credentials_then_re
     response = client.post(f"{ProjectSettings.API_VERSION_PATH}/authenticate",
                            json={"username": "testUser", "password": "wrongPassword"})
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    assert response.json() == {'message': 'Oops! unauthorized'}
+    assert response.json() == {'message': 'Username or Password is incorrect'}
 
 
 def test_authenticate_users_when_authenticate_with_large_input_password_then_unprocessable_request_is_returned(

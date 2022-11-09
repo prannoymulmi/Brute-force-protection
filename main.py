@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -7,6 +6,8 @@ from config.models.ProjectSettings import ProjectSettings
 
 from api import api_router
 from db.dbconfig import create_db_and_tables
+from exceptions.UserNotFoundError import UserNotFoundError
+from middleware.generic_error_handler import unauthorized_exception_handler
 
 app = FastAPI(title=ProjectSettings.PROJECT_NAME,
               description=ProjectSettings.PROJECT_DESCRIPTION,
@@ -33,10 +34,11 @@ app.add_middleware(
 app.include_router(api_router, prefix=ProjectSettings.API_VERSION_PATH)
 
 
+# Creating all necessary tables for SQL lite after the server starts
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
 
+
 # Exception handling Inclusion
-# app.add_exception_handler(VerifyMismatchError, hash_password_mismatch_exception_handler)
-# app.add_exception_handler(VerificationError, hash_password_mismatch_exception_handler)
+app.add_exception_handler(UserNotFoundError, unauthorized_exception_handler)
