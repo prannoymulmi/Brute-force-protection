@@ -1,12 +1,10 @@
-import logging
 from typing import Any
 
 from argon2 import PasswordHasher
 from sqlalchemy.exc import SQLAlchemyError
-from sqlmodel import select
-
+from sqlmodel import select, Session
 from db import models
-from db.dbconfig import session_scope
+from db.dbconfig import get_session
 from db.models import User
 from exceptions.UserNotFoundError import UserNotFoundError
 
@@ -20,7 +18,7 @@ class UserRepository:
         # logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
         # logger = logging.getLogger(__name__)
         try:
-            with session_scope() as db:
+            with get_session() as db:
                 db_user = User(username=username,
                                password=hashed_password,
                                )
@@ -32,14 +30,19 @@ class UserRepository:
             # logger.info(e)
             return None
 
-    def get_user_id(self, username: str) -> Any:
+    def get_user_id(self, session: Session, username: str) -> Any:
         """ Get User Data based on name"""
         try:
-            with session_scope() as db:
-                statement = select(models.User).where(
-                    models.User.username == username)
-                results = db.exec(statement)
-                data = results.one()
-                return data
+            statement = select(models.User).where(
+                models.User.username == username)
+            result = session.exec(statement)
+            data = result.one()
+            return data
+            # with get_session() as db:
+            #     statement = select(models.User).where(
+            #         models.User.username == username)
+            #     results = db.exec(statement)
+            #     data = results.one()
+            #     return data
         except SQLAlchemyError as e:
             raise UserNotFoundError(f"User not found {e}")

@@ -1,15 +1,17 @@
-from sqlmodel import Session, create_engine, SQLModel
-from contextlib import contextmanager
+from sqlmodel import Session, create_engine
 
 from config.models.DBSettings import DBSettings
 from . import models
 
 engine = create_engine(
     DBSettings.DB_URL,
+    connect_args={'check_same_thread': False},
     echo=True
 )
 
-models.SQLModel.metadata.create_all(engine)
+
+def create_db_and_tables():
+    models.SQLModel.metadata.create_all(engine)
 
 
 """
@@ -17,8 +19,7 @@ Using contextmanager to reuse the opening and closing of db session
 """
 
 
-@contextmanager
-def session_scope() -> Session:
+def get_session() -> Session:
     """Provide a transactional scope around a series of operations."""
     db = None
     try:

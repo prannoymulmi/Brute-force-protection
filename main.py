@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from config.models.ProjectSettings import ProjectSettings
 
 from api import api_router
+from db.dbconfig import create_db_and_tables
 
 app = FastAPI(title=ProjectSettings.PROJECT_NAME,
               description=ProjectSettings.PROJECT_DESCRIPTION,
@@ -30,6 +31,11 @@ app.add_middleware(
 
 # Router Inclusion
 app.include_router(api_router, prefix=ProjectSettings.API_VERSION_PATH)
+
+
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
 # Exception handling Inclusion
 # app.add_exception_handler(VerifyMismatchError, hash_password_mismatch_exception_handler)
