@@ -6,9 +6,8 @@ from fastapi.testclient import TestClient
 from starlette import status
 from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, create_engine
-from db import models
+from db import models, dbconfig
 from config.models.ProjectSettings import ProjectSettings
-from db.dbconfig import session_scope
 from db.models import User
 from main import app
 
@@ -17,7 +16,7 @@ Start Initializing Test with data in the in memory database
 """
 
 
-@pytest.fixture(name="session")
+@pytest.fixture(name="session", autouse=True)
 def session_fixture():
     engine = create_engine(
         "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
@@ -29,11 +28,10 @@ def session_fixture():
 
 @pytest.fixture(name="client")
 def client_fixture(session: Session):
-    @contextmanager
     def session_scope_override():
         return session  #
 
-    app.dependency_overrides[session_scope] = session_scope_override
+    app.dependency_overrides[dbconfig.get_session] = session_scope_override
     client = TestClient(app)
     yield client
     app.dependency_overrides.clear()
@@ -52,7 +50,6 @@ def test_authenticate_users_when_authenticate_with_correct_credentials_then_requ
     add_user_to_in_mem_db(password, session, username)
 
     # When
-    hero_in_db = session.get(User, username)
     response = client.post(f"{ProjectSettings.API_VERSION_PATH}/authenticate",
                            json={"username": username, "password": password})
 
