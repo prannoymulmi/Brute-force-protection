@@ -12,6 +12,11 @@ engine = create_engine(
 models.SQLModel.metadata.create_all(engine)
 
 
+"""
+Using contextmanager to reuse the opening and closing of db session
+"""
+
+
 @contextmanager
 def session_scope() -> Session:
     """Provide a transactional scope around a series of operations."""

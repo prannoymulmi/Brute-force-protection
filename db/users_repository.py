@@ -8,6 +8,7 @@ from sqlmodel import select
 from db import models
 from db.dbconfig import session_scope
 from db.models import User
+from exceptions.UserNotFoundError import UserNotFoundError
 
 
 class UserRepository:
@@ -41,4 +42,4 @@ class UserRepository:
                 data = results.one()
                 return data
         except SQLAlchemyError as e:
-            return None
+            raise UserNotFoundError(f"User not found {e}")

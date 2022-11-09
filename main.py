@@ -34,4 +34,3 @@ app.include_router(api_router, prefix=ProjectSettings.API_VERSION_PATH)
 # Exception handling Inclusion
 # app.add_exception_handler(VerifyMismatchError, hash_password_mismatch_exception_handler)
 # app.add_exception_handler(VerificationError, hash_password_mismatch_exception_handler)
-# app.add_exception_handler(Exception, hash_password_mismatch_exception_handler)

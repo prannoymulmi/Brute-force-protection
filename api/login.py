@@ -7,6 +7,7 @@ from argon2 import PasswordHasher
 
 from db.models import User
 from db.users_repository import UserRepository
+from exceptions.UserNotFoundError import UserNotFoundError
 from models.UserLoginRequest import UserLoginRequest
 
 router = APIRouter()
@@ -19,7 +20,7 @@ async def authenticate_staff(user: UserLoginRequest):
     try:
         db_user: User = ur.get_user_id(user.username)
         ph.verify(db_user.password, user.password)
-    except (VerifyMismatchError, InvalidHash, VerificationError):
+    except (VerifyMismatchError, InvalidHash, VerificationError, UserNotFoundError):
 
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
