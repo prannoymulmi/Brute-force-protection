@@ -15,7 +15,7 @@ def create_db_and_tables():
 
 
 """
-Using contextmanager to reuse the opening and closing of db session
+A reusable method which returns a session for the database. This session can be used to execute queries from the functions. 
 """
 
 

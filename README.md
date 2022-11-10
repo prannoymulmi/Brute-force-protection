@@ -20,8 +20,8 @@ pip install -r requirements.txt
 ### Valid Users to test from
 ```json
 {
-  "username": "asd",
-  "password": "dasdasd"
+  "username": "prannoy",
+  "password": "testPassword"
 }
 ```
 

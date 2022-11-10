@@ -1,32 +1,52 @@
 from argon2 import PasswordHasher
-from sqlalchemy.pool import StaticPool
-from sqlmodel import Session, create_engine
+from sqlmodel import Session
 
-from db import models
-from db.dbconfig import get_session
 from db.models import User
 from db.users_repository import UserRepository
-from main import app
+from schemas.UserCreateRequest import UserCreateRequest
+from tests.testutils import TestUtils
 
 
-def test_create_user():
-    engine = create_engine(
-        # Using  https://sqlmodel.tiangolo.com/tutorial/fastapi/tests/#configure-the-in-memory-database
-        "sqlite://",
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    models.SQLModel.metadata.create_all(engine)
-    with Session(engine) as session:
-        def session_scope_override():  #
-            return session  #
-        app.dependency_overrides[get_session] = session_scope_override
-        ur = UserRepository()
-        ur.create_user(session, "test", "test")
-        data: User = ur.get_user_id(session, "test")
-        app.dependency_overrides.clear()
+def test_create_user_when_user_does_not_exists_then_new_user_is_created(session: Session):
+    # Given
+    ur = UserRepository()
+    user: UserCreateRequest = UserCreateRequest(username="test", password="test", email="test@test")
 
-        ph = PasswordHasher()
-        assert data.username == "test"
-        assert ph.verify(data.password, "test")
-        # TODO: Assertions
+    # When
+    data: User = ur.create_user(session, user)
+
+    # Then
+    ph = PasswordHasher()
+    assert data.username == "test"
+    assert ph.verify(data.password, "test")
+
+
+def test_create_user_when_user_does_not_exists_then_new_user_is_not_created_twice(session: Session):
+    # Given
+    ur = UserRepository()
+    TestUtils.add_user_to_in_mem_db("test", session, "test")
+    user: UserCreateRequest = UserCreateRequest(username="test", password="test", email="test@test")
+
+    # When
+    data = ur.create_user(session, user)
+
+    # Then
+    assert data is None
+
+
+def test_get_user_when_user__exists_then_user_is_returned(session: Session):
+    # Given
+    ur = UserRepository()
+    username = "test"
+    password = "test"
+    TestUtils.add_user_to_in_mem_db(password, session, username)
+
+    # When
+    data:User = ur.get_user_id(session, username)
+
+    # Then
+    ph = PasswordHasher()
+    assert data is not None
+    assert ph.verify(data.password, password)
+    assert data.created_timestamp is not None
+    assert data.email == "test@test"

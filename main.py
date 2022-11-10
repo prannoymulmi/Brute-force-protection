@@ -41,4 +41,4 @@ def on_startup():
 
 
 # Exception handling Inclusion
-app.add_exception_handler(UserNotFoundError, unauthorized_exception_handler)
+#app.add_exception_handler(UserNotFoundError, unauthorized_exception_handler)

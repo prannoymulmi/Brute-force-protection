@@ -7,7 +7,7 @@ from db import models
 from db.dbconfig import get_session
 from db.models import User
 from exceptions.UserNotFoundError import UserNotFoundError
-from models.UserCreateRequest import UserCreateRequest
+from schemas.UserCreateRequest import UserCreateRequest
 
 
 class UserRepository:

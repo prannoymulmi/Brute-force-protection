@@ -5,7 +5,7 @@ from starlette.responses import JSONResponse
 
 from db.dbconfig import get_session
 from db.users_repository import UserRepository
-from models.UserCreateRequest import UserCreateRequest
+from schemas.UserCreateRequest import UserCreateRequest
 
 router = APIRouter()
 

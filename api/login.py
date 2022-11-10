@@ -9,7 +9,7 @@ from db.dbconfig import get_session
 from db.models import User
 from db.users_repository import UserRepository
 from exceptions.UserNotFoundError import UserNotFoundError
-from models.UserLoginRequest import UserLoginRequest
+from schemas.UserLoginRequest import UserLoginRequest
 
 router = APIRouter()
 
@@ -23,13 +23,12 @@ async def authenticate_staff(*, session: Session = Depends(get_session), user: U
     ph = PasswordHasher()
     ur = UserRepository()
     try:
-        # ur.create_user(user.username, user.password)
         db_user: User = ur.get_user_id(session, user.username)
         ph.verify(db_user.password, user.password)
-    except (VerifyMismatchError, InvalidHash, VerificationError):
+    except (VerifyMismatchError, InvalidHash, VerificationError, UserNotFoundError):
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            content={"message": f"Oops! unauthorized"},
+            content={"message": f"Username or Password is incorrect"},
         )
     return JSONResponse(status_code=status.HTTP_200_OK,
                         content={'token': 'hello'})
