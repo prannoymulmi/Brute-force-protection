@@ -1,4 +1,4 @@
-from config.ConfigHelper import get_config
+from config.config_util import get_config
 
 
 class ApplicationSettings:
