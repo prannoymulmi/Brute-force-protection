@@ -1,13 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api import api_router
 # REST API Settings
 from config.models.ProjectSettings import ProjectSettings
-
-from api import api_router
 from db.dbconfig import create_db_and_tables
-from exceptions.UserNotFoundError import UserNotFoundError
-from middleware.generic_error_handler import unauthorized_exception_handler
 
 app = FastAPI(title=ProjectSettings.PROJECT_NAME,
               description=ProjectSettings.PROJECT_DESCRIPTION,

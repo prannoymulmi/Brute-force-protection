@@ -1,10 +1,11 @@
+from datetime import datetime
 from typing import Any
 
 from argon2 import PasswordHasher
 from sqlalchemy.exc import SQLAlchemyError
 from sqlmodel import select, Session
+
 from db import models
-from db.dbconfig import get_session
 from db.models import User
 from exceptions.UserNotFoundError import UserNotFoundError
 from schemas.UserCreateRequest import UserCreateRequest
@@ -38,6 +39,28 @@ class UserRepository:
             return True
         except UserNotFoundError:
             return False
+
+    def increment_login_counter_for_user(self, session: Session, username: str):
+        user = self.get_user_with_username(session, username)
+        user.login_counter = user.login_counter + 1
+        user.modified_timestamp = datetime.utcnow()
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+
+    def reset_login_counter_for_user(self, session: Session, username: str):
+        user = self.get_user_with_username(session, username)
+        user.login_counter = 0
+        user.modified_timestamp = datetime.utcnow()
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+
+    def get_user_with_username(self, session, username):
+        statement = select(User).where(User.username == username)
+        results = session.exec(statement)
+        user = results.one()
+        return user
 
     def get_user_id(self, session: Session, username: str) -> Any:
         """ Get User Data based on name"""

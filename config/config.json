@@ -14,5 +14,9 @@
   },
   "DB_CONFIG": {
     "DB_URL": "sqlite:///test.db"
+  },
+  "APPLICATION_CONFIG": {
+    "LOGIN_MAX_ATTEMPT_COUNT": 5,
+    "LOGIN_USER_BLOCKED_TIME_MINUTES": 10
   }
 }

@@ -10,5 +10,3 @@ def get_config() -> Dict:
             __file__).parent.parent) + os.sep + "config" + os.sep + "config.json",
               'r') as fp:
         return json.load(fp)
-
-

@@ -7,9 +7,10 @@ from main import app
 import pytest
 
 """
-Start Initializing Test with data in the in memory database
-Using fixtures to set up a test https://docs.pytest.org/en/6.2.x/fixture.html
-The fixtures are set with scope package, which indicates that the session and client can be reused in the all the test in this package.
+
+Using fixtures to set up in-mem database for a test https://docs.pytest.org/en/6.2.x/fixture.html
+The fixtures are set with scope function, which indicates that the session and client can be reused in the all the test in this package. It is also 
+is newly recreated for every test so that there are no side effects.
 """
 
 
