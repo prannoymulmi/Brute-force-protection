@@ -16,7 +16,7 @@ class UserRepository:
     def create_user(self: str, session: Session, user: UserCreateRequest) -> Any:
         """ Add New User"""
 
-        if self.check_if_user_exists(session, user):
+        if self.__check_if_user_exists(session, user):
             return None
         try:
             ph = PasswordHasher()
@@ -32,13 +32,6 @@ class UserRepository:
         except SQLAlchemyError as e:
             # logger.info(e)
             return None
-
-    def check_if_user_exists(self, session: Session, user: UserCreateRequest) -> bool:
-        try:
-            self.get_user_id(session, user.username)
-            return True
-        except UserNotFoundError:
-            return False
 
     def increment_login_counter_for_user(self, session: Session, username: str):
         user = self.get_user_with_username(session, username)
@@ -72,3 +65,10 @@ class UserRepository:
             return data
         except SQLAlchemyError as e:
             raise UserNotFoundError(f"User not found {e}")
+
+    def __check_if_user_exists(self, session: Session, user: UserCreateRequest) -> bool:
+        try:
+            self.get_user_id(session, user.username)
+            return True
+        except UserNotFoundError:
+            return False
