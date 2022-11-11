@@ -13,7 +13,8 @@ password attacks that might occur for the login system.
 After installing the requirements run the following commands in order
 ```bash
 python -m venv . # creates python virtual environment for the project
-source bin/activate # activates virtual environment
+source bin/activate # activates virtual environment, this is on mac
+script bin/activate # This is for windows
 pip -V  #Is used to check if the virtual environment is being used 
 pip install -r requirements.txt # Install all required dependencies
 ./venv/bin/python python -m uvicorn main:app --reload # Runs the server

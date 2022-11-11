@@ -3,7 +3,7 @@ from argon2 import PasswordHasher
 from sqlmodel import Session
 
 from db.models import User
-from db.users_repository import UserRepository
+from crud.users_repository import UserRepository
 from exceptions.UserNotFoundError import UserNotFoundError
 from schemas.UserCreateRequest import UserCreateRequest
 from tests.testutils import TestUtils

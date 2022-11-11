@@ -4,7 +4,7 @@ from starlette import status
 from starlette.responses import JSONResponse
 
 from db.dbconfig import get_session
-from db.users_repository import UserRepository
+from crud.users_repository import UserRepository
 from schemas.UserCreateRequest import UserCreateRequest
 
 from utils.password_policy import policy

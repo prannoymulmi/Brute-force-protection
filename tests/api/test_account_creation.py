@@ -3,7 +3,6 @@ from starlette import status
 from starlette.testclient import TestClient
 
 from config.models.ProjectSettings import ProjectSettings
-from db.users_repository import UserRepository
 from schemas.UserCreateRequest import UserCreateRequest
 
 EMAIL = "test@test"

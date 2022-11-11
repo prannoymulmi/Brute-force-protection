@@ -18,7 +18,7 @@ def test_authenticate_users_when_authenticate_with_correct_credentials_then_requ
 
     # Then
     assert response.status_code == status.HTTP_200_OK
-    assert response.json() == {'token': 'hello'}
+    assert response.json() == {'token': 'some_token'}
 
 
 def test_authenticate_users_when_authenticate_with_login_attempts_exceeded_then_request_is_forbidden(session: Session,
@@ -103,7 +103,7 @@ def test_authenticate_users_when_authenticate_with_wrong_credentials_once_then_r
 
     assert saved_user_attempt_2.login_counter == 0
     assert response_correct_attempt.status_code == status.HTTP_200_OK
-    assert response_correct_attempt.json() == {'token': 'hello'}
+    assert response_correct_attempt.json() == {'token': 'some_token'}
 
 
 def test_authenticate_users_when_authenticate_with_wrong_credentials_exceeded_then_request_is_unauthorized_and_counter_is_incremented(
