@@ -23,7 +23,8 @@ async def create_staff_user(*, session: Session = Depends(get_session), user: Us
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={
             "message": "The password is not strong enough use at least 16 character, 2 Uppercase, 2 numbers, 2 specials, and 2 digits"})
     ur = UserRepository()
-    data = ur.create_user(session, user)
+    data = ur.create_user_or_else_return_none(session, user)
+    # if user already exists then return forbidden
     if data is None:
         # The error Cannot create user does not give information why the creation failed, providing less information for others to abuse
         return JSONResponse(status_code=status.HTTP_403_FORBIDDEN, content={"message": "Cannot create user"})

@@ -13,7 +13,7 @@ from schemas.UserCreateRequest import UserCreateRequest
 
 class UserRepository:
 
-    def create_user(self: str, session: Session, user: UserCreateRequest) -> Any:
+    def create_user_or_else_return_none(self: str, session: Session, user: UserCreateRequest) -> Any:
         """ Add New User"""
 
         if self.__check_if_user_exists(session, user):

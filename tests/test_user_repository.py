@@ -15,7 +15,7 @@ def test_create_user_when_user_does_not_exists_then_new_user_is_created(session:
     user: UserCreateRequest = UserCreateRequest(username="test", password="test", email="test@test")
 
     # When
-    data: User = ur.create_user(session, user)
+    data: User = ur.create_user_or_else_return_none(session, user)
 
     # Then
     assert data.username == "test"
@@ -27,7 +27,7 @@ def test_create_user_when_user_does_not_exists_then_password_is_stored_as_a_hash
     user: UserCreateRequest = UserCreateRequest(username="test", password="test", email="test@test")
 
     # When
-    data: User = ur.create_user(session, user)
+    data: User = ur.create_user_or_else_return_none(session, user)
 
     # Then
     ph = PasswordHasher()
@@ -44,7 +44,7 @@ def test_create_user_when_user_does_not_exists_then_new_user_is_not_created_twic
     user: UserCreateRequest = UserCreateRequest(username="test", password="test", email="test@test")
 
     # When
-    data = ur.create_user(session, user)
+    data = ur.create_user_or_else_return_none(session, user)
 
     # Then
     assert data is None
