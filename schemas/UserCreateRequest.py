@@ -1,5 +1,9 @@
 from pydantic import BaseModel, Field
 
+'''
+Inheriting BaseModel from pydantic, because it has all the methods needed for a schema, i.e, to_json, validate etc. 
+'''
+
 
 class UserCreateRequest(BaseModel):
     username: str = Field(

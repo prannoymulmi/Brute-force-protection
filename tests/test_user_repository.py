@@ -37,7 +37,10 @@ def test_create_user_when_user_does_not_exists_then_password_is_stored_as_a_hash
 def test_create_user_when_user_does_not_exists_then_new_user_is_not_created_twice(session: Session):
     # Given
     ur = UserRepository()
-    TestUtils.add_user_to_in_mem_db("test", session, "test")
+    username = "test"
+    password = "test"
+    user_initial = User(username=username, password=password, email="test@test")
+    TestUtils.add_user_to_in_mem_db(user_initial, session)
     user: UserCreateRequest = UserCreateRequest(username="test", password="test", email="test@test")
 
     # When
@@ -52,7 +55,8 @@ def test_get_user_when_user_exists_then_user_is_returned(session: Session):
     ur = UserRepository()
     username = "test"
     password = "test"
-    TestUtils.add_user_to_in_mem_db(password, session, username)
+    user = User(username=username, password=password, email="test@test")
+    TestUtils.add_user_to_in_mem_db(user, session)
 
     # When
     data: User = ur.get_user_id(session, username)

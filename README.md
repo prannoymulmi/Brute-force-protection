@@ -40,7 +40,7 @@ python -m pytest tests/
 
 ## Automated Tests
 
-## Implemented security measures for ASMIS authentication system
+# Implemented security measures for ASMIS authentication system
 
 * The usernames and password inputs have a max length of ```64 characters``` to prevent any kind of injection attacks.
 * The passwords have to follow strict patterns of having at least ```16 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
@@ -49,13 +49,13 @@ This helps prevents staff from practicing poor password hygiene and makes brute 
   Example ```$argon2id$v=19$m=65536,t=3,p=4$ngO2O3DDwuUuVttzpwIyWA$CjigQrhs4Yvh2cNd2/x/K4hhcZFuj1XCvWzHvcqxM08```(Add
   Reference)
 * Used argon2 ```verify (hashed_password, to_be_verified_password)``` function to verify password instead of doing a
-  string comparison.
+  string comparison, also prevents side-channel attacks.
 * Used SQL Model functions ```select(User).where(User.username == username)``` which sanitizes the sql statements
   preventing SQL injection.
 * The login attempt is validated and counted up till 5 times, then the user is blocked for 10 minutes.
 * The timestamp of the last login attempt is also stored for auditing purposes.
 
-## References
+# References
 
 * Tutorial how to run fastapi in a local
   environment <a href=https://fastapi.tiangolo.com/tutorial/first-steps/ class="external-link" target="_blank">
