@@ -12,27 +12,30 @@ from schemas.UserCreateRequest import UserCreateRequest
 
 
 class UserRepository:
-
+    """ A method which creates a user if it does not exist"""
     def create_user_or_else_return_none(self: str, session: Session, user: UserCreateRequest) -> Any:
-        """ Add New User"""
-
+        # does nothing if a user already exists
         if self.__check_if_user_exists(session, user):
             return None
         try:
             ph = PasswordHasher()
+            # hashes the password into argon2id with random salt
             hashed_password = ph.hash(user.password)
             db_user = User(username=user.username,
                            password=hashed_password,
                            email=user.email
                            )
+            # the user is then saved in the database using the orm
             session.add(db_user)
             session.commit()
             session.refresh(db_user)
             return db_user
         except SQLAlchemyError as e:
-            # logger.info(e)
             return None
 
+    """
+    Method which increases the counter when there is a failed login attempt for the user
+    """
     def increment_login_counter_for_user(self, session: Session, username: str):
         user = self.get_user_with_username(session, username)
         user.login_counter = user.login_counter + 1
@@ -41,6 +44,9 @@ class UserRepository:
         session.commit()
         session.refresh(user)
 
+    """
+       Method which resets the counter to 0, when there is a failed login attempt for the user
+    """
     def reset_login_counter_for_user(self, session: Session, username: str):
         user = self.get_user_with_username(session, username)
         user.login_counter = 0
@@ -55,8 +61,8 @@ class UserRepository:
         user = results.one()
         return user
 
+    """ Get User Data based on name"""
     def get_user_id(self, session: Session, username: str) -> Any:
-        """ Get User Data based on name"""
         try:
             statement = select(models.User).where(
                 models.User.username == username)
@@ -66,6 +72,7 @@ class UserRepository:
         except SQLAlchemyError as e:
             raise UserNotFoundError(f"User not found {e}")
 
+    """A private method, which checks if the user exists"""
     def __check_if_user_exists(self, session: Session, user: UserCreateRequest) -> bool:
         try:
             self.get_user_id(session, user.username)

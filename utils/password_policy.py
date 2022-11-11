@@ -1,5 +1,7 @@
 from password_strength import PasswordPolicy
-
+"""
+A configuration for the password policy strength.
+"""
 policy = PasswordPolicy.from_names(
     length=16,  # min length: 16
     uppercase=2,  # need min. 2 uppercase letters

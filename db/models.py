@@ -3,7 +3,7 @@ from sqlalchemy import Column, String
 from sqlmodel import Field
 from sqlmodel import SQLModel
 
-
+""" The database models, which the ORM uses to translate data into tables."""
 class User(SQLModel, table=True):
     username: str = Field(primary_key=True, index=True)
 

@@ -31,6 +31,7 @@ async def authenticate_staff(*, session: Session = Depends(get_session), user: U
                 status_code=status.HTTP_403_FORBIDDEN,
                 content={"message": f"User is blocked due to too many attempts"},
             )
+        # Verify the password using safe function verify. This is more resilient against side-channel attack, instead of string comparison
         ph.verify(db_user.password, user.password)
         ur.reset_login_counter_for_user(session, user.username)
     except (VerifyMismatchError, InvalidHash, VerificationError):
