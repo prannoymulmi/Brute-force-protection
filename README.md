@@ -14,11 +14,11 @@ After installing the requirements run the following commands in order
 ```bash
 python -m venv ./venv # creates python virtual environment for the project
 source ./venv/bin/activate # activates virtual environment, this is on mac
-script bin/activate # This is for windows
+.\venv\Scripts\activate.bat # This is for windows
 python -m pip install --upgrade pip # upgrade pip to get the latest packages
 pip -V  #Is used to check if the virtual environment is being used 
 pip install -r requirements.txt # Install all required dependencies
-./venv/bin/python python -m uvicorn main:app --reload # Runs the server
+python -m uvicorn main:app --reload # Runs the server
 ```
 
 ### Valid Users to test from in the UI
