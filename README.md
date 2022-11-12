@@ -12,9 +12,10 @@ password attacks that might occur for the login system.
 
 After installing the requirements run the following commands in order
 ```bash
-python -m venv . # creates python virtual environment for the project
-source bin/activate # activates virtual environment, this is on mac
+python -m venv ./venv # creates python virtual environment for the project
+source ./venv/bin/activate # activates virtual environment, this is on mac
 script bin/activate # This is for windows
+python -m pip install --upgrade pip # upgrade pip to get the latest packages
 pip -V  #Is used to check if the virtual environment is being used 
 pip install -r requirements.txt # Install all required dependencies
 ./venv/bin/python python -m uvicorn main:app --reload # Runs the server
@@ -32,23 +33,28 @@ To use the API run the server and enter http://127.0.0.1:8000/api/v1/docs and th
 }
 ```
 
+### Dependency Injection
+
+## Automated Tests
+The mitigations implemented in this project are all tested using ```pytest``` to see if the security measures that are implemented
+for the endpoints of the system behave as intended. The test cases can be seen [here](./tests). This list of tests cases are as follows:
+```
+when_password_policy_is_not_correct_then_a_bad_request_is_returned
+
+```
+
+
 ```bash
 # Run unit test
 python -m pytest tests/
 ```
-
-## Dependency Injection
-
-## Automated Tests
-
 # Implemented security measures for ASMIS authentication system
 
 * The usernames and password inputs have a max length of ```64 characters``` to prevent any kind of injection attacks.
 * The passwords have to follow strict patterns of having at least ```16 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
 This helps prevents staff from practicing poor password hygiene and makes brute force attacks harder.
-* Passwords are stored using argon2id hashing algorithms which are resilient against side-channel and GPU attacks.
-  Example ```$argon2id$v=19$m=65536,t=3,p=4$ngO2O3DDwuUuVttzpwIyWA$CjigQrhs4Yvh2cNd2/x/K4hhcZFuj1XCvWzHvcqxM08```(Add
-  Reference)
+* Passwords are stored using argon2id (memory-hard algorithm) hashing algorithms which are resilient against side-channel and GPU attacks.
+  Example ```$argon2id$v=19$m=65536,t=3,p=4$ngO2O3DDwuUuVttzpwIyWA$CjigQrhs4Yvh2cNd2/x/K4hhcZFuj1XCvWzHvcqxM08```(Biryukov, A. 2016, pg.293)
 * Used argon2 ```verify (hashed_password, to_be_verified_password)``` function to verify password instead of doing a
   string comparison, also prevents side-channel attacks.
 * Used SQL Model functions ```select(User).where(User.username == username)``` which sanitizes the sql statements
@@ -67,3 +73,4 @@ This helps prevents staff from practicing poor password hygiene and makes brute 
 * Tutorial how to implement and test SQLModel ORM to connect the database to the
   application <a href=https://sqlmodel.tiangolo.com/tutorial/fastapi/tests/#configure-the-in-memory-database>
   SQLMODEL</a>.
+* Biryukov, A., Dinu, D. and Khovratovich, D., 2016, March. Argon2: new generation of memory-hard functions for password hashing and other applications. In 2016 IEEE European Symposium on Security and Privacy (EuroS&P) (pp. 292-302). IEEE.
