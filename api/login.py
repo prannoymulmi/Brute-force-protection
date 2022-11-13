@@ -17,12 +17,11 @@ from schemas.StaffLoginRequest import StaffLoginRequest
 router = APIRouter()
 
 """
-Endpoint which verify the password 
+Endpoint which verify the password. 
 """
 @router.post("/authenticate", responses={401: {"message": f"Oops! unauthorized"}})
-async def authenticate_staff(*, session: Session = Depends(get_session), user: StaffLoginRequest):
+async def authenticate_staff(user: StaffLoginRequest, session: Session = Depends(get_session), ur: UserRepository = Depends(UserRepository)):
     ph = PasswordHasher()
-    ur = UserRepository()
     try:
         db_user: Staff = ur.get_user_id(session, user.username)
         # Checks if the login attempts is exceeded
