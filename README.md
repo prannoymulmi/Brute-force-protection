@@ -7,7 +7,7 @@ password attacks that might occur for the login system.
 # Getting Started 🚀
 
 ### Prerequisites
-* <a href=https://www.python.org/downloads/release/python-360/> Python 3.6 or Greater</a>
+* <a href=https://www.python.org/downloads/release/python-370/> Python 3.7 or Greater</a>
 * <a href=https://pip.pypa.io/en/stable/installation/> pip 21.3.1 or Greater</a>
 
 After installing the requirements run the following commands in order
