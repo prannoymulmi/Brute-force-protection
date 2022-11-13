@@ -1,4 +1,4 @@
-class UserNotFoundError(Exception):
+class CannotCreateUserError(Exception):
     """ Exception raised when staff is not found in the database.
 
     Attributes:
@@ -6,7 +6,7 @@ class UserNotFoundError(Exception):
 
     """
 
-    def __init__(self, message: str = "Staff is not Found") -> None:
+    def __init__(self, message: str = "Cannot create User") -> None:
         self.message = message
         super().__init__(self.message)
 

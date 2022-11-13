@@ -37,12 +37,7 @@ To use the API run the server and enter http://127.0.0.1:8000/api/v1/docs and th
 
 ## Automated Tests
 The mitigations implemented in this project are all tested using ```pytest``` to see if the security measures that are implemented
-for the endpoints of the system behave as intended. The test cases can be seen [here](./tests). This list of tests cases are as follows:
-```
-when_password_policy_is_not_correct_then_a_bad_request_is_returned
-
-```
-
+for the endpoints of the system behave as intended. The test cases can be seen [here](./tests).
 
 ```bash
 # Run unit test
@@ -50,17 +45,19 @@ python -m pytest tests/
 ```
 # Implemented security measures for ASMIS authentication system
 
-* The usernames and password inputs have a max length of ```64 characters``` to prevent any kind of injection attacks.
-* The passwords have to follow strict patterns of having at least ```16 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
+* The usernames and password inputs have a max length of ```64 characters``` to prevent injection attacks.
+* The passwords must follow strict patterns of having at least ```16 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
 This helps prevents staff from practicing poor password hygiene and makes brute force attacks harder.
-* Passwords are stored using argon2id (memory-hard algorithm) hashing algorithms which are resilient against side-channel and GPU attacks.
+* Passwords are stored using argon2id (memory-hard algorithm) hashing algorithms resilient against side-channel and GPU attacks.
   Example ```$argon2id$v=19$m=65536,t=3,p=4$ngO2O3DDwuUuVttzpwIyWA$CjigQrhs4Yvh2cNd2/x/K4hhcZFuj1XCvWzHvcqxM08```(Biryukov, A. 2016, pg.293)
-* Used argon2 ```verify (hashed_password, to_be_verified_password)``` function to verify password instead of doing a
+* Used argon2 ```verify (hashed_password, to_be_verified_password)``` function to verify password instead of making a
   string comparison, also prevents side-channel attacks.
-* Used SQL Model functions ```select(User).where(User.username == username)``` which sanitizes the sql statements
+* Used SQL Model functions ```select(Staff).where(Staff.username == username)``` which sanitizes the SQL statements
   preventing SQL injection.
-* The login attempt is validated and counted up till 5 times, then the user is blocked for 10 minutes.
+* The login attempt is validated and counted up to five times, then the user is blocked for 10 minutes.
 * The timestamp of the last login attempt is also stored for auditing purposes.
+* If login or creation of user fails due to wrong username or password or already existing data. The error message forwarded is generic and does
+not expose any information about what is missing or wrong.
 
 # References
 

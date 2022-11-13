@@ -3,7 +3,7 @@ from starlette import status
 from starlette.testclient import TestClient
 
 from config.models.ProjectSettings import ProjectSettings
-from schemas.UserCreateRequest import UserCreateRequest
+from schemas.StaffUserCreateRequest import StaffUserCreateRequest
 
 EMAIL = "test@test"
 
@@ -16,7 +16,7 @@ PASSWORD_LESS_THAN_16_CHARACTERS = "1VeryGood4$%"
 def test_create_staff_user_when_password_policy_is_not_correct_then_a_bad_request_is_returned(session: Session,
                                                                                               client: TestClient):
     # Given
-    user: UserCreateRequest = UserCreateRequest(username=USERNAME, password=BAD_PASSWORD, email=EMAIL)
+    user: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=BAD_PASSWORD, email=EMAIL)
 
     # When
     response = client.post(f"{ProjectSettings.API_VERSION_PATH}/addUser",
@@ -31,8 +31,8 @@ def test_create_staff_user_when_password_policy_is_not_correct_then_a_bad_reques
 def test_create_staff_user_when_password_policy_has_less_than_16_chars_then_a_bad_request_is_returned(session: Session,
                                                                                                       client: TestClient):
     # Given
-    user: UserCreateRequest = UserCreateRequest(username=USERNAME, password=PASSWORD_LESS_THAN_16_CHARACTERS,
-                                                email=EMAIL)
+    user: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=PASSWORD_LESS_THAN_16_CHARACTERS,
+                                                          email=EMAIL)
 
     # When
     response = client.post(f"{ProjectSettings.API_VERSION_PATH}/addUser",
@@ -47,7 +47,7 @@ def test_create_staff_user_when_password_policy_has_less_than_16_chars_then_a_ba
 def test_create_staff_user_when_password_has_all_requirements_is_not_correct_then_a_user_is_created(session: Session,
                                                                                                     client: TestClient):
     # Given
-    user: UserCreateRequest = UserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
+    user: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
 
     # When
     response = client.post(f"{ProjectSettings.API_VERSION_PATH}/addUser",
@@ -61,12 +61,12 @@ def test_create_staff_user_when_password_has_all_requirements_is_not_correct_the
 def test_create_staff_user_when_user_already_exists_then_forbidden_is_returned(session: Session,
                                                                                client: TestClient):
     # Given
-    user: UserCreateRequest = UserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
+    user: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
 
     # When
     response_success = client.post(f"{ProjectSettings.API_VERSION_PATH}/addUser",
                                    json=user.dict())
-    # try to create the same user again
+    # try to create the same staff again
     response_failure = client.post(f"{ProjectSettings.API_VERSION_PATH}/addUser",
                                    json=user.dict())
 
@@ -75,4 +75,4 @@ def test_create_staff_user_when_user_already_exists_then_forbidden_is_returned(s
     assert response_success.json() == {}
 
     assert response_failure.status_code == status.HTTP_403_FORBIDDEN
-    assert response_failure.json() == {"message": "Cannot create user"}
+    assert response_failure.json() == {"message": "Cannot create staff"}
