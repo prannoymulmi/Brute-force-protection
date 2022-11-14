@@ -79,7 +79,7 @@ def test_create_staff_user_when_user_already_exists_then_forbidden_is_returned(s
 
 
 def test_create_staff_user_when_email_already_exists_then_forbidden_is_returned(session: Session,
-                                                                               client: TestClient):
+                                                                                client: TestClient):
     # Given
     user_1: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
     user_2: StaffUserCreateRequest = StaffUserCreateRequest(username="USERNAME", password=VALID_PASSWORD, email=EMAIL)
