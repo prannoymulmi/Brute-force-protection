@@ -1,8 +1,8 @@
 # Description
 
-This is a scoped project of the ASMIS system for the queens medical system, which only accounts for preventing brute
-force
-password attacks that might occur for the login system.
+This project implements a simple REST API for a web-based appointment and scheduling management information system (ASMIS).
+The API is scoped to creating users and verifying their credentials with security as the primary focus. 
+The few security measures implemented here are explained in the section [Implemented security measures for ASMIS authentication system](#implemented-security-measures-for-the-asmis-authentication-system).
 
 # Getting Started 🚀
 
@@ -23,7 +23,8 @@ python -m uvicorn main:app --reload # Runs the server
 
 ### Valid Users to test from in the UI
 
-To use the API run the server and enter http://127.0.0.1:8000/api/v1/docs and the available endpoints will be displayed.
+To use the API, run the server and enter http://127.0.0.1:8000/api/v1/docs and 
+the available endpoints will be displayed.
 
 ```json
 {
@@ -36,15 +37,16 @@ To use the API run the server and enter http://127.0.0.1:8000/api/v1/docs and th
 ### Dependency Injection
 
 ## Automated Tests
-The mitigations implemented in this project are all tested using ```pytest``` to see if the security measures that are implemented
-for the endpoints of the system behave as intended. The test cases can be seen [here](./tests).
+The mitigations implemented in this project are all tested using ```pytest``` to see if the security measures implemented for the system's endpoints behave as intended. 
+The test cases can be seen [tests](./tests).
 
 ```bash
 # Run unit test
 python -m pytest tests/ -v 
 ```
 ![api creation](./images/test_cases.png)
-# Implemented security measures for ASMIS authentication system
+
+# Implemented security measures for the ASMIS authentication system
 
 * The usernames and password inputs have a max length of ```64 characters``` to prevent injection attacks.
 * The passwords must follow strict patterns of having at least ```16 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
@@ -62,13 +64,13 @@ not expose any information about what is missing or wrong.
 
 # References
 
-* Tutorial how to run fastapi in a local
+* Tutorial on how to run fastapi in a local
   environment <a href=https://fastapi.tiangolo.com/tutorial/first-steps/ class="external-link" target="_blank">
   Fast API</a>.
-* A sample fullstack project to build a API using fast
+* A sample full-stack project to build an API using fast
   API <a href=https://github.com/scionoftech/FastAPI-Full-Stack-Samples class="external-link" target="_blank">
   Github</a>.
-* Tutorial how to implement and test SQLModel ORM to connect the database to the
+* Tutorial on implementing and testing SQLModel ORM to connect the database to the
   application <a href=https://sqlmodel.tiangolo.com/tutorial/fastapi/tests/#configure-the-in-memory-database>
   SQLMODEL</a>.
 * Biryukov, A., Dinu, D. and Khovratovich, D., 2016, March. Argon2: new generation of memory-hard functions for password hashing and other applications. In 2016 IEEE European Symposium on Security and Privacy (EuroS&P) (pp. 292-302). IEEE.
