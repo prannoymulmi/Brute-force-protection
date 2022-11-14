@@ -27,9 +27,9 @@ To use the API run the server and enter http://127.0.0.1:8000/api/v1/docs and th
 
 ```json
 {
-  "username": "testUser1",
+  "username": "user1",
   "password": "V3ryG00dPassw0rd?!",
-  "email": "hello@hello.com"
+  "email": "user1@hello.com"
 }
 ```
 
@@ -43,6 +43,7 @@ for the endpoints of the system behave as intended. The test cases can be seen [
 # Run unit test
 python -m pytest tests/ -v 
 ```
+![api creation](./images/test_cases.png)
 # Implemented security measures for ASMIS authentication system
 
 * The usernames and password inputs have a max length of ```64 characters``` to prevent injection attacks.
