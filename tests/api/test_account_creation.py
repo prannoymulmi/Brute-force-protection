@@ -76,3 +76,24 @@ def test_create_staff_user_when_user_already_exists_then_forbidden_is_returned(s
 
     assert response_failure.status_code == status.HTTP_403_FORBIDDEN
     assert response_failure.json() == {"message": "Cannot create staff"}
+
+
+def test_create_staff_user_when_email_already_exists_then_forbidden_is_returned(session: Session,
+                                                                               client: TestClient):
+    # Given
+    user_1: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
+    user_2: StaffUserCreateRequest = StaffUserCreateRequest(username="USERNAME", password=VALID_PASSWORD, email=EMAIL)
+
+    # When
+    response_success = client.post(f"{ProjectSettings.API_VERSION_PATH}/addUser",
+                                   json=user_1.dict())
+    # try to create the same staff again
+    response_failure = client.post(f"{ProjectSettings.API_VERSION_PATH}/addUser",
+                                   json=user_2.dict())
+
+    # Then
+    assert response_success.status_code == status.HTTP_201_CREATED
+    assert response_success.json() == {}
+
+    assert response_failure.status_code == status.HTTP_400_BAD_REQUEST
+    assert response_failure.json() == {"message": "Cannot create staff"}

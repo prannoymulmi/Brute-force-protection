@@ -13,7 +13,7 @@ password attacks that might occur for the login system.
 After installing the requirements run the following commands in order
 ```bash
 python -m venv ./venv # creates python virtual environment for the project
-source ./venv/bin/activate # activates virtual environment, this is on mac
+source ./venv/bin/activate # activates virtual environment, this is on mac or linux
 .\venv\Scripts\activate.bat # This is for windows
 python -m pip install --upgrade pip # upgrade pip to get the latest packages
 pip -V  #Is used to check if the virtual environment is being used 
@@ -41,7 +41,7 @@ for the endpoints of the system behave as intended. The test cases can be seen [
 
 ```bash
 # Run unit test
-python -m pytest tests/
+python -m pytest tests/ -v 
 ```
 # Implemented security measures for ASMIS authentication system
 
