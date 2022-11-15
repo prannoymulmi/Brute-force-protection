@@ -23,6 +23,7 @@ async def create_staff_user(staff: StaffUserCreateRequest, session: Session = De
     # The strength of the password in accordance to the set policy is tested
     strength = policy.password(staff.password).test()
     if strength:
+        # The error that staff cannot be created when password policy does not match.
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={
             "message": "The password is not strong enough use at least 16 character, 2 Uppercase, 2 numbers, 2 specials, and 2 digits"})
     # create a staff if it does not exist
@@ -35,4 +36,5 @@ async def create_staff_user(staff: StaffUserCreateRequest, session: Session = De
         return JSONResponse(status_code=status.HTTP_201_CREATED, content={})
     except CannotCreateUserError as e:
         log.exception(e, exc_info=True)
+        # The error that staff cannot be created when inputs such as email or username is not unique
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"message": f"{e.message}"})

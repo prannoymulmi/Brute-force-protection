@@ -6,7 +6,7 @@ from . import models
 engine = create_engine(
     DBSettings.DB_URL,
     connect_args={'check_same_thread': False},
-    echo=True
+    echo=False
 )
 
 """ A function which creates all the tables defined in the models if not created"""
