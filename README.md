@@ -9,12 +9,12 @@ The API is scoped to creating users and verifying their credentials with securit
 * <a href=https://www.python.org/downloads/release/python-370/> Python 3.7 or Greater</a>
 * <a href=https://pip.pypa.io/en/stable/installation/> pip 21.3.1 or Greater</a>
 
-After installing the requirements run the following commands in order
+After installing the requirements, run the following commands in order
 ```bash
 # creates python virtual environment for the project
 python -m venv ./venv 
 
-# activates virtual environment, this is on mac or linux
+# activates virtual environment; this is on Mac or Linux
 source ./venv/bin/activate 
 
 # This is for windows
@@ -46,7 +46,7 @@ the available endpoints will be displayed.
 }
 ```
 ### Configuration
-The settings of the database and application are configured in the file [config.json](./config/config.json). 
+The database and application settings are configured in the file [config.json](./config/config.json). 
 
 ## Automated Tests
 The mitigations implemented in this project are all tested using ```pytest``` to see if the security measures implemented for the system's endpoints behave as intended. 
@@ -62,7 +62,7 @@ The test cases can be found in the package [tests](./tests).
 
 # Implemented security measures for the ASMIS authentication system
 
-* The usernames and password inputs have a max length of ```64 characters``` to prevent injection attacks.
+* The usernames and password inputs have a max length of ```64 characters``` preventing injection attacks.
 * The passwords must follow strict patterns of having at least ```16 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
 This helps prevents staff from practicing poor password hygiene and makes brute force attacks harder.
 * Passwords are stored using argon2id (memory-hard algorithm) hashing algorithms resilient against side-channel and GPU attacks.
@@ -79,7 +79,7 @@ not expose any information about what is missing or wrong.
 
 # Outputs
 * The example for an output log in JSON can be found in the output folder [error_log_output.json](./docs/outputs/error_log_ouput.json).
-* The database output can be found in [test.db](test.db). This file can be opened using a DBMS, like SQL workbench etc. 
+* The database output can be found in [test.db](test.db). This file can be opened using a DBMS, like SQL workbench, etc. 
 Execute ```Select * from main.staff``` to see all the contents of the table.
 ![DB result](./docs/images/db.png)
 * The staff creation process using the swagger UI to call the ```/addUser``` endpoint, a success HTTP status 201 created is returned.
@@ -87,7 +87,7 @@ Execute ```Select * from main.staff``` to see all the contents of the table.
   * ![Create Staff User](./docs/images/account_creation.png)
 
 * The staff creation process using the swagger UI to call the ```/authenticate``` endpoint, a success HTTP status 200 created  
-with a fake token is returned. This token can be replaced with access token using the OAuth2 flow (Oauth.net. 2020).
+with a fake token is returned. This token can be replaced with an access token using the OAuth2 flow (Oauth.net. 2020).
   * ![Create Staff User](./docs/images/account_verification.png)
 # References
 
