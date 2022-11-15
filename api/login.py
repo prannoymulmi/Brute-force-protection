@@ -13,14 +13,20 @@ from db.models import Staff
 from crud.users_repository import UserRepository
 from exceptions.UserNotFoundError import UserNotFoundError
 from schemas.StaffLoginRequest import StaffLoginRequest
+from utils.logging import get_logger
+
+MINUTES_IN_AN_HOUR = 60
 
 router = APIRouter()
 
 """
 Endpoint which verify the password. 
 """
+# Depends() is a function which is in fastAPI to do dependency injection. Using Dependency Injection it is easier to mock it in the automated tests.
 @router.post("/authenticate", responses={401: {"message": f"Oops! unauthorized"}})
 async def authenticate_staff(user: StaffLoginRequest, session: Session = Depends(get_session), ur: UserRepository = Depends(UserRepository)):
+    # get the logger
+    log = get_logger(__name__)
     ph = PasswordHasher()
     try:
         db_user: Staff = ur.get_user_id(session, user.username)
@@ -33,9 +39,12 @@ async def authenticate_staff(user: StaffLoginRequest, session: Session = Depends
         # Verify the password using safe function verify. This is more resilient against side-channel attack, instead of string comparison
         ph.verify(db_user.password, user.password)
         ur.reset_login_counter_for_user(session, user.username)
-    except (VerifyMismatchError, InvalidHash, VerificationError):
+    except (VerifyMismatchError, InvalidHash, VerificationError) as e:
+        log.exception(e, exc_info=True)
         return handle_incorrect_password(session, ur, user)
-    except UserNotFoundError:
+    except UserNotFoundError as e:
+        # A Http 401 is returned instead of HTTP 404 not found, so that the external entity does not get extra information that the username is not found.
+        log.exception(e, exc_info=True)
         return handle_user_not_found()
     # Using fake token but an Oauth flow using access and refresh token is a suitable implementation
     return JSONResponse(status_code=status.HTTP_200_OK,
@@ -46,7 +55,7 @@ async def authenticate_staff(user: StaffLoginRequest, session: Session = Depends
 Function which checks if the the max login count and the blocked time as well.
 """
 def is_login_count_exceeded(db_user: Staff) -> bool:
-    delta = (datetime.utcnow().timestamp() - db_user.modified_timestamp.timestamp()) / 60
+    delta = (datetime.utcnow().timestamp() - db_user.modified_timestamp.timestamp()) / MINUTES_IN_AN_HOUR
     return db_user.login_counter >= ApplicationSettings.LOGIN_MAX_ATTEMPT_COUNT and delta <= ApplicationSettings.LOGIN_USER_BLOCKED_TIME_MINUTES
 
 

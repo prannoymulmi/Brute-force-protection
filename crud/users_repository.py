@@ -44,7 +44,7 @@ class UserRepository:
     def increment_login_counter_for_user(self, session: Session, username: str):
         user = self.get_user_with_username(session, username)
         user.login_counter = user.login_counter + 1
-        user.modified_timestamp = datetime.utcnow()
+        user.last_login_attempt = datetime.utcnow()
         session.add(user)
         session.commit()
         session.refresh(user)
@@ -55,7 +55,7 @@ class UserRepository:
     def reset_login_counter_for_user(self, session: Session, username: str):
         user = self.get_user_with_username(session, username)
         user.login_counter = 0
-        user.modified_timestamp = datetime.utcnow()
+        user.last_login_attempt = datetime.utcnow()
         session.add(user)
         session.commit()
         session.refresh(user)

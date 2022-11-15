@@ -12,13 +12,26 @@ The few security measures implemented here are explained in the section [Impleme
 
 After installing the requirements run the following commands in order
 ```bash
-python -m venv ./venv # creates python virtual environment for the project
-source ./venv/bin/activate # activates virtual environment, this is on mac or linux
-.\venv\Scripts\activate.bat # This is for windows
-python -m pip install --upgrade pip # upgrade pip to get the latest packages
-pip -V  #Is used to check if the virtual environment is being used 
-pip install -r requirements.txt # Install all required dependencies
-python -m uvicorn main:app --reload # Runs the server
+# creates python virtual environment for the project
+python -m venv ./venv 
+
+# activates virtual environment, this is on mac or linux
+source ./venv/bin/activate 
+
+# This is for windows
+.\venv\Scripts\activate.bat 
+
+# upgrade pip to get the latest packages
+python -m pip install --upgrade pip 
+
+#Is used to check if the virtual environment is being used 
+pip -V  
+
+# Install all required dependencies
+pip install -r requirements.txt 
+
+# Runs the server
+python -m uvicorn main:app --reload 
 ```
 
 ### Valid Users to test from in the UI
@@ -33,8 +46,6 @@ the available endpoints will be displayed.
   "email": "user1@hello.com"
 }
 ```
-
-### Dependency Injection
 
 ## Automated Tests
 The mitigations implemented in this project are all tested using ```pytest``` to see if the security measures implemented for the system's endpoints behave as intended. 
@@ -61,6 +72,10 @@ This helps prevents staff from practicing poor password hygiene and makes brute 
 * The timestamp of the last login attempt is also stored for auditing purposes.
 * If login or creation of user fails due to wrong username or password or already existing data. The error message forwarded is generic and does
 not expose any information about what is missing or wrong.
+* Logging application error in ```JSON``` format, this helps the Security information and event management (SIEM) parse the errors easily.
+```json
+{"timestamp": "2022-11-15T13:25:29.975495Z", "level": "ERROR", "name": "api.login", "message": "Staff not found No row was found when one was required", "exc_info": "Traceback (most recent call last):\n  File \"./crud/users_repository.py\", line 75, in get_user_id\n    data = result.one()\n  File \"/Users/prannoy/PycharmProjects/bruteForceProtectionLogin/venv/lib/python3.9/site-packages/sqlalchemy/engine/result.py\", line 1476, in one\n    return self._only_one_row(\n  File \"/Users/prannoy/PycharmProjects/bruteForceProtectionLogin/venv/lib/python3.9/site-packages/sqlalchemy/engine/result.py\", line 562, in _only_one_row\n    raise exc.NoResultFound(\nsqlalchemy.exc.NoResultFound: No row was found when one was required\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"./api/login.py\", line 29, in authenticate_staff\n    db_user: Staff = ur.get_user_id(session, user.username)\n  File \"./crud/users_repository.py\", line 78, in get_user_id\n    raise UserNotFoundError(f\"Staff not found {e}\")\nexceptions.UserNotFoundError.UserNotFoundError: Staff not found No row was found when one was required"}
+```
 
 # References
 
@@ -73,4 +88,5 @@ not expose any information about what is missing or wrong.
 * Tutorial on implementing and testing SQLModel ORM to connect the database to the
   application <a href=https://sqlmodel.tiangolo.com/tutorial/fastapi/tests/#configure-the-in-memory-database>
   SQLMODEL</a>.
+* How to configure a custom logger in Json in python <a href=https://pypi.org/project/python-json-logger/> Json Logger</a>.
 * Biryukov, A., Dinu, D. and Khovratovich, D., 2016, March. Argon2: new generation of memory-hard functions for password hashing and other applications. In 2016 IEEE European Symposium on Security and Privacy (EuroS&P) (pp. 292-302). IEEE.
