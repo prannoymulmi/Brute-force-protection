@@ -1,0 +1,7 @@
+{
+  "timestamp": "2022-11-15T13:25:29.975495Z",
+  "level": "ERROR",
+  "name": "api.login",
+  "message": "Staff not found No row was found when one was required",
+  "exc_info": "Traceback (most recent call last):  File \"./crud/users_repository.py\", line 75, in get_user_id    data = result.one()  File \"/Users/prannoy/PycharmProjects/bruteForceProtectionLogin/venv/lib/python3.9/site-packages/sqlalchemy/engine/result.py\", line 1476, in one    return self._only_one_row(  File \"/Users/prannoy/PycharmProjects/bruteForceProtectionLogin/venv/lib/python3.9/site-packages/sqlalchemy/engine/result.py\", line 562, in _only_one_row    raise exc.NoResultFound(sqlalchemy.exc.NoResultFound: No row was found when one was requiredDuring handling of the above exception, another exception occurred:Traceback (most recent call last):  File \"./api/login.py\", line 29, in authenticate_staff    db_user: Staff = ur.get_user_id(session, user.username)  File \"./crud/users_repository.py\", line 78, in get_user_id    raise UserNotFoundError(f\"Staff not found {e}\")exceptions.UserNotFoundError.UserNotFoundError: Staff not found No row was found when one was required"
+}

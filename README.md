@@ -1,8 +1,7 @@
 # Description
 
 This project implements a simple REST API for a web-based appointment and scheduling management information system (ASMIS).
-The API is scoped to creating users and verifying their credentials with security as the primary focus. 
-The few security measures implemented here are explained in the section [Implemented security measures for ASMIS authentication system](#implemented-security-measures-for-the-asmis-authentication-system).
+The API is scoped to creating users and verifying their credentials with security as the primary focus.
 
 # Getting Started 🚀
 
@@ -46,16 +45,20 @@ the available endpoints will be displayed.
   "email": "user1@hello.com"
 }
 ```
+### Configuration
+The settings of the database and application are configured in the file [config.json](./config/config.json). 
 
 ## Automated Tests
 The mitigations implemented in this project are all tested using ```pytest``` to see if the security measures implemented for the system's endpoints behave as intended. 
-The test cases can be seen [tests](./tests).
+All the positive and negative tests related to security are carried out here.
 
 ```bash
-# Run unit test
+# Run tests
 python -m pytest tests/ -v 
 ```
-![api creation](./images/test_cases.png)
+The test cases can be found in the package [tests](./tests).
+
+![api creation](./docs/images/test_cases.png)
 
 # Implemented security measures for the ASMIS authentication system
 
@@ -73,10 +76,19 @@ This helps prevents staff from practicing poor password hygiene and makes brute 
 * If login or creation of user fails due to wrong username or password or already existing data. The error message forwarded is generic and does
 not expose any information about what is missing or wrong.
 * Logging application error in ```JSON``` format, this helps the Security information and event management (SIEM) parse the errors easily.
-```json
-{"timestamp": "2022-11-15T13:25:29.975495Z", "level": "ERROR", "name": "api.login", "message": "Staff not found No row was found when one was required", "exc_info": "Traceback (most recent call last):\n  File \"./crud/users_repository.py\", line 75, in get_user_id\n    data = result.one()\n  File \"/Users/prannoy/PycharmProjects/bruteForceProtectionLogin/venv/lib/python3.9/site-packages/sqlalchemy/engine/result.py\", line 1476, in one\n    return self._only_one_row(\n  File \"/Users/prannoy/PycharmProjects/bruteForceProtectionLogin/venv/lib/python3.9/site-packages/sqlalchemy/engine/result.py\", line 562, in _only_one_row\n    raise exc.NoResultFound(\nsqlalchemy.exc.NoResultFound: No row was found when one was required\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"./api/login.py\", line 29, in authenticate_staff\n    db_user: Staff = ur.get_user_id(session, user.username)\n  File \"./crud/users_repository.py\", line 78, in get_user_id\n    raise UserNotFoundError(f\"Staff not found {e}\")\nexceptions.UserNotFoundError.UserNotFoundError: Staff not found No row was found when one was required"}
-```
 
+# Outputs
+* The example for an output log in JSON can be found in the output folder [error_log_output.json](./docs/outputs/error_log_ouput.json).
+* The database output can be found in [test.db](test.db). This file can be opened using a DBMS, like SQL workbench etc. 
+Execute ```Select * from main.staff``` to see all the contents of the table.
+![DB result](./docs/images/db.png)
+* The staff creation process using the swagger UI to call the ```/addUser``` endpoint, a success HTTP status 201 created is returned.
+
+  * ![Create Staff User](./docs/images/account_creation.png)
+
+* The staff creation process using the swagger UI to call the ```/addUser``` endpoint, a success HTTP status 200 created  
+with a fake token is returned. This token can be replaced with access token using the OAuth2 flow (Oauth.net. 2020).
+  * ![Create Staff User](./docs/images/account_verification.png)
 # References
 
 * Tutorial on how to run fastapi in a local
@@ -90,3 +102,4 @@ not expose any information about what is missing or wrong.
   SQLMODEL</a>.
 * How to configure a custom logger in Json in python <a href=https://pypi.org/project/python-json-logger/> Json Logger</a>.
 * Biryukov, A., Dinu, D. and Khovratovich, D., 2016, March. Argon2: new generation of memory-hard functions for password hashing and other applications. In 2016 IEEE European Symposium on Security and Privacy (EuroS&P) (pp. 292-302). IEEE.
+* Oauth.net. (2020). OAuth 2.0 — OAuth. [online] Available at: https://oauth.net/2/.
