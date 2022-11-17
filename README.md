@@ -87,7 +87,7 @@ Execute ```Select * from main.staff``` to see all the contents of the table.
   * ![Create Staff User](./docs/images/account_creation.png)
 
 * The staff creation process using the swagger UI to call the ```/authenticate``` endpoint, a success HTTP status 200 created  
-with a fake token is returned. This token can be replaced with an access token using the OAuth2 flow (Oauth.net. 2020).
+with a fake token is returned. This token should be replaced with an access token using the OAuth2 flow (Oauth.net. 2020).
   * ![Create Staff User](./docs/images/account_verification.png)
 # References
 
