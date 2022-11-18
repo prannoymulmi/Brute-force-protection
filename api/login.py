@@ -48,10 +48,10 @@ async def authenticate_staff(user: StaffLoginRequest, session: Session = Depends
         # A Http 401 is returned instead of HTTP 404 not found, so that the external entity does not get extra information that the username is not found.
         log.exception(e, exc_info=True)
         return handle_user_not_found()
-    # Using fake token but an Oauth flow using access and refresh token is a suitable implementation
+    # An Oauth signed token is returned as the result of successful authentication
     token = TokenResponse(token=encode_jwt())
     return JSONResponse(status_code=status.HTTP_200_OK,
-                        content=token.json())
+                        content=token.dict())
 
 
 """

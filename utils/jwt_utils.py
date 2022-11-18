@@ -13,18 +13,16 @@ from schemas.TokenMessage import TokenMessage
 
 instance = JWT()
 
-message = TokenMessage(iss="asmis", sub="", iat=get_int_from_datetime(datetime.now(timezone.utc)),
-                       exp=get_int_from_datetime(
-                           datetime.now(timezone.utc) + timedelta(minutes=30)))
-
 """
 Encode the message to JWT(JWS).
 """
-
-
 def encode_jwt():
+    iat = datetime.now(timezone.utc)
+    message = TokenMessage(iss="asmis", sub="", iat=get_int_from_datetime(iat),
+                           exp=get_int_from_datetime(
+                               iat + timedelta(minutes=30)))
     # A RSA key from a PEM file.
-    with open(f'{get_project_root()}/private_key.pem', 'rb') as fh:
+    with open(f'{get_project_root()}/private_key_for_testing_purposes.pem', 'rb') as fh:
         signing_key = jwk_from_pem(pem_content=fh.read())
     compact_jws = instance.encode(message.dict(), signing_key, alg='RS256')
     return compact_jws

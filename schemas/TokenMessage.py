@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 '''
-A schema which takes in takes data required to create a staff.
+A schema for content of the token
 Inheriting BaseModel from pydantic, because it has all the methods needed for a schema, i.e, to_json, validate etc. 
 '''
 class TokenMessage(BaseModel):

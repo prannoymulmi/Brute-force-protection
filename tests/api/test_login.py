@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 from starlette import status
@@ -6,7 +8,6 @@ from config.models.ProjectSettings import ProjectSettings
 from db.models import Staff
 from schemas.TokenResponse import TokenResponse
 from tests.testutils import TestUtils
-from utils.jwt_utils import decode_jwt
 
 
 def test_authenticate_users_when_authenticate_with_correct_credentials_then_request_is_successful(session: Session,
@@ -75,8 +76,6 @@ def test_authenticate_users_when_authenticate_with_wrong_credentials_then_reques
 """
 Checks if counter is incremented after a wrong attempt and also the counter is reset after correct attempt
 """
-
-
 def test_authenticate_users_when_authenticate_with_wrong_credentials_once_then_request_is_unauthorized_and_counter_is_incremented_and_then_reseted(
         session: Session,
         client: TestClient):
@@ -86,6 +85,7 @@ def test_authenticate_users_when_authenticate_with_wrong_credentials_once_then_r
     # When
     # Correct credentials are provided
     user = session.get(Staff, username)
+
     assert user.login_counter == 0
     response = client.post(f"{ProjectSettings.API_VERSION_PATH}/authenticate",
                            json={"username": username, "password": "wrongPassword"})
@@ -103,12 +103,10 @@ def test_authenticate_users_when_authenticate_with_wrong_credentials_once_then_r
 
     saved_user_attempt_2 = session.get(Staff, username)
 
-    token: TokenResponse = TokenResponse.parse_raw(response_correct_attempt.json())
+    token: TokenResponse = TokenResponse.parse_obj(response_correct_attempt.json())
     assert saved_user_attempt_2.login_counter == 0
     assert response_correct_attempt.status_code == status.HTTP_200_OK
     assert token.token is not None
-    assert decode_jwt(token.token) is not None
-
 
 
 def test_authenticate_users_when_authenticate_with_wrong_credentials_exceeded_then_request_is_unauthorized_and_counter_is_incremented(
