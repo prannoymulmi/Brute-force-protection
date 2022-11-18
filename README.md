@@ -76,7 +76,7 @@ This helps prevents staff from practicing poor password hygiene and makes brute 
 * If login or creation of user fails due to wrong username or password or already existing data. The error message forwarded is generic and does
 not expose any information about what is missing or wrong.
 * After authentication tokens are signed using a [private key](./private_key_for_testing_purposes.pem). 
-The digitally signed tokens prevents spoofing. The spoofing is tested using an unsigned token which is rejected by the automatic tests [spoofing test](./tests/utils/test_jwt_utils.py).   
+The digitally signed tokens prevents spoofing. The spoofing is tested using an unsigned token which is rejected by the [automatic test](./tests/utils/test_jwt_utils.py).   
 * Logging application error in ```JSON``` format, this helps the Security information and event management (SIEM) parse the errors easily.
 
 # Outputs
@@ -89,8 +89,10 @@ Execute ```Select * from main.staff``` to see all the contents of the table.
   * ![Create Staff User](./docs/images/account_creation.png)
 
 * The staff creation process using the swagger UI to call the ```/authenticate``` endpoint, a success HTTP status 200 created  
-with a fake token is returned. This token should be replaced with an access token using the OAuth2 flow (Oauth.net. 2020).
+with a fake token is returned. A Signed JWT token is used so that Oauth flow can be implemented (Oauth.net. 2020).
   * ![Create Staff User](./docs/images/account_verification.png)
+* A user is blocked due to too many login attempts.
+  * * ![Create Staff User](./docs/images/too_many_attempts.png)
 # References
 
 * Tutorial on how to run fastapi in a local
