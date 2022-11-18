@@ -75,6 +75,8 @@ This helps prevents staff from practicing poor password hygiene and makes brute 
 * The timestamp of the last login attempt is also stored for auditing purposes.
 * If login or creation of user fails due to wrong username or password or already existing data. The error message forwarded is generic and does
 not expose any information about what is missing or wrong.
+* After authentication tokens are signed using a [private key](./private_key_for_testing_purposes.pem). 
+The digitally signed tokens prevents spoofing. The spoofing is tested using an unsigned token which is rejected by the automatic tests [spoofing test](./tests/utils/test_jwt_utils.py).   
 * Logging application error in ```JSON``` format, this helps the Security information and event management (SIEM) parse the errors easily.
 
 # Outputs

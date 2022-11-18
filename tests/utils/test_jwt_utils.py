@@ -1,6 +1,6 @@
 import datetime
 from datetime import timezone, timedelta, datetime
-from unittest.mock import ANY, MagicMock
+from unittest.mock import ANY
 from unittest.mock import Mock
 
 import pytest
