@@ -13,6 +13,8 @@ from db.models import Staff
 from crud.users_repository import UserRepository
 from exceptions.UserNotFoundError import UserNotFoundError
 from schemas.StaffLoginRequest import StaffLoginRequest
+from schemas.TokenResponse import TokenResponse
+from utils.jwt_utils import encode_jwt
 from utils.logging import get_logger
 
 MINUTES_IN_AN_HOUR = 60
@@ -47,8 +49,9 @@ async def authenticate_staff(user: StaffLoginRequest, session: Session = Depends
         log.exception(e, exc_info=True)
         return handle_user_not_found()
     # Using fake token but an Oauth flow using access and refresh token is a suitable implementation
+    token = TokenResponse(token=encode_jwt())
     return JSONResponse(status_code=status.HTTP_200_OK,
-                        content={'token': 'some_token'})
+                        content=token.json())
 
 
 """

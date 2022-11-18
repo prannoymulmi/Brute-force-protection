@@ -4,7 +4,9 @@ from starlette import status
 
 from config.models.ProjectSettings import ProjectSettings
 from db.models import Staff
+from schemas.TokenResponse import TokenResponse
 from tests.testutils import TestUtils
+from utils.jwt_utils import decode_jwt
 
 
 def test_authenticate_users_when_authenticate_with_correct_credentials_then_request_is_successful(session: Session,
@@ -18,7 +20,7 @@ def test_authenticate_users_when_authenticate_with_correct_credentials_then_requ
 
     # Then
     assert response.status_code == status.HTTP_200_OK
-    assert response.json() == {'token': 'some_token'}
+    assert response.json() is not None
 
 
 def test_authenticate_users_when_authenticate_with_login_attempts_exceeded_then_request_is_forbidden(session: Session,
@@ -101,9 +103,12 @@ def test_authenticate_users_when_authenticate_with_wrong_credentials_once_then_r
 
     saved_user_attempt_2 = session.get(Staff, username)
 
+    token: TokenResponse = TokenResponse.parse_raw(response_correct_attempt.json())
     assert saved_user_attempt_2.login_counter == 0
     assert response_correct_attempt.status_code == status.HTTP_200_OK
-    assert response_correct_attempt.json() == {'token': 'some_token'}
+    assert token.token is not None
+    assert decode_jwt(token.token) is not None
+
 
 
 def test_authenticate_users_when_authenticate_with_wrong_credentials_exceeded_then_request_is_unauthorized_and_counter_is_incremented(
