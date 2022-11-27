@@ -8,7 +8,7 @@ from starlette.testclient import TestClient
 import utils
 from config.models.ProjectSettings import ProjectSettings
 from schemas.StaffUserCreateRequest import StaffUserCreateRequest
-from utils.password_check import PasswordCheck
+from utils.password_check import check_compromised_password
 
 EMAIL = "test@test"
 
@@ -52,7 +52,7 @@ def test_create_staff_user_when_password_policy_has_less_than_8_chars_then_a_bad
 def test_create_staff_user_when_password_has_all_requirements_is_not_correct_then_a_user_is_created(session: Session,
                                                                                                     client: TestClient):
     # Given
-    PasswordCheck.check_compromised_password = Mock(return_value=False)
+    utils.password_check.check_compromised_password = Mock(return_value=False)
     user: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
 
     # When
@@ -67,7 +67,7 @@ def test_create_staff_user_when_password_has_all_requirements_is_not_correct_the
 def test_create_staff_user_when_password_is_breached_then_400_is_returned(session: Session,
                                                                           client: TestClient):
     # Given
-    PasswordCheck.check_compromised_password = Mock(return_value=True)
+    utils.password_check.check_compromised_password = Mock(return_value=True)
     user: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
 
     # When
@@ -82,7 +82,7 @@ def test_create_staff_user_when_password_is_breached_then_400_is_returned(sessio
 def test_create_staff_user_when_user_already_exists_then_forbidden_is_returned(session: Session,
                                                                                client: TestClient):
     # Given
-    PasswordCheck.check_compromised_password = Mock(return_value=False)
+    utils.password_check.check_compromised_password = Mock(return_value=False)
     user: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
 
     # When
@@ -103,7 +103,7 @@ def test_create_staff_user_when_user_already_exists_then_forbidden_is_returned(s
 def test_create_staff_user_when_email_already_exists_then_forbidden_is_returned(session: Session,
                                                                                 client: TestClient):
     # Given
-    PasswordCheck.check_compromised_password = Mock(return_value=False)
+    utils.password_check.check_compromised_password = Mock(return_value=False)
     user_1: StaffUserCreateRequest = StaffUserCreateRequest(username=USERNAME, password=VALID_PASSWORD, email=EMAIL)
     user_2: StaffUserCreateRequest = StaffUserCreateRequest(username="USERNAME", password=VALID_PASSWORD, email=EMAIL)
 

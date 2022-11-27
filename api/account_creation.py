@@ -3,12 +3,12 @@ from sqlmodel import Session
 from starlette import status
 from starlette.responses import JSONResponse
 
+import utils.password_check
 from db.dbconfig import get_session
 from crud.users_repository import UserRepository
 from exceptions.CannotCreateUserError import CannotCreateUserError
 from schemas.StaffUserCreateRequest import StaffUserCreateRequest
 from utils.logging import get_logger
-from utils.password_check import PasswordCheck
 
 from utils.password_policy import policy
 
@@ -29,7 +29,7 @@ async def create_staff_user(staff: StaffUserCreateRequest, session: Session = De
             "message": "The password is not strong enough use at least 8 character, 2 Uppercase, 2 numbers, 2 specials, and 2 digits"})
     # Check if the password has already been breached
     # This is important because the staff password should not be a victim of an easy credential stuffing attack
-    is_compromised = PasswordCheck.check_compromised_password(staff.password)
+    is_compromised = utils.password_check.check_compromised_password(staff.password)
     if is_compromised:
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={
             "message": "The Password has already been breached, please use another one"})
