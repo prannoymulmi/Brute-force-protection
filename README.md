@@ -63,7 +63,7 @@ The test cases can be found in the package [tests](./tests).
 # Implemented security measures for the ASMIS authentication system
 
 * The usernames and password inputs have a max length of ```64 characters``` preventing injection attacks.
-* The passwords must follow strict patterns of having at least ```16 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
+* The passwords must follow strict patterns of having at least ```8 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
 This helps prevents staff from practicing poor password hygiene and makes brute force attacks harder.
 * Passwords are stored using argon2id (memory-hard algorithm) hashing algorithms resilient against side-channel and GPU attacks.
   Example ```$argon2id$v=19$m=65536,t=3,p=4$ngO2O3DDwuUuVttzpwIyWA$CjigQrhs4Yvh2cNd2/x/K4hhcZFuj1XCvWzHvcqxM08```(Biryukov, A. 2016, pg.293)
@@ -78,6 +78,8 @@ not expose any information about what is missing or wrong.
 * After authentication tokens are signed using a [private key](./private_key_for_testing_purposes.pem). 
 The digitally signed tokens prevents spoofing. The spoofing is tested using an unsigned token which is rejected by the [automatic test](./tests/utils/test_jwt_utils.py).   
 * Logging application error in ```JSON``` format, this helps the Security information and event management (SIEM) parse the errors easily.
+* Breached credentials are checked using pawned password API. Using K-anonymity only first 5 letters of the SHA1 is sent to the API for comparison
+and is then evaluated in the code.
 
 # Outputs
 * The example for an output log in JSON can be found in the output folder [error_log_output.json](./docs/outputs/error_log_ouput.json).
@@ -107,3 +109,4 @@ with a fake token is returned. A Signed JWT token is used so that Oauth flow can
 * How to configure a custom logger in Json in python <a href=https://pypi.org/project/python-json-logger/> Json Logger</a>.
 * Biryukov, A., Dinu, D. and Khovratovich, D., 2016, March. Argon2: new generation of memory-hard functions for password hashing and other applications. In 2016 IEEE European Symposium on Security and Privacy (EuroS&P) (pp. 292-302). IEEE.
 * Oauth.net. (2020). OAuth 2.0 — OAuth. [online] Available at: https://oauth.net/2/.
+* Checking for breached passwords using K-anonymity <a href=https://sanatinia.medium.com/securely-check-if-a-password-is-compromised-in-python-be74bf52b0cc> Checking Breached Passwords</a>.
