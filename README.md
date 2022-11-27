@@ -63,7 +63,7 @@ The test cases can be found in the package [tests](./tests).
 # Implemented security measures for the ASMIS authentication system
 
 * The usernames and password inputs have a max length of ```64 characters``` preventing injection attacks.
-* The passwords must follow strict patterns of having at least ```16 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
+* The passwords must follow strict patterns of having at least ```8 characters, 2 digits, 2 Uppercase, 2 Lowercase, and 2 digits```.
 This helps prevents staff from practicing poor password hygiene and makes brute force attacks harder.
 * Passwords are stored using argon2id (memory-hard algorithm) hashing algorithms resilient against side-channel and GPU attacks.
   Example ```$argon2id$v=19$m=65536,t=3,p=4$ngO2O3DDwuUuVttzpwIyWA$CjigQrhs4Yvh2cNd2/x/K4hhcZFuj1XCvWzHvcqxM08```(Biryukov, A. 2016, pg.293)
