@@ -11,7 +11,9 @@ from schemas.TokenMessage import TokenMessage
 from utils.jwt_utils import encode_jwt, decode_jwt, instance
 from freezegun import freeze_time
 
-
+"""
+Using freeze time to mock date and time, so that the test always returns deterministic results
+"""
 @freeze_time("2022-11-18")
 def test_encode_jwt_when_called_a_jwt_token_of_expiry_30_minutes_is_returned():
     iat = datetime.now(timezone.utc)
