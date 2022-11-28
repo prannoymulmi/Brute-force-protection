@@ -90,8 +90,7 @@ Execute ```Select * from main.staff``` to see all the contents of the table.
 
   * ![Create Staff User](./docs/images/account_creation.png)
 
-* The staff creation process using the swagger UI to call the ```/authenticate``` endpoint, a success HTTP status 200 created  
-with a fake token is returned. A Signed JWT token is used so that Oauth flow can be implemented (Oauth.net. 2020).
+* The staff creation process using the swagger UI to call the ```/authenticate``` endpoint, a success HTTP status 200 created. A Signed JWT token is used so that Oauth flow can be implemented (Oauth.net. 2020).
   * ![Create Staff User](./docs/images/account_verification.png)
 * A user is blocked due to too many login attempts.
   * * ![Create Staff User](./docs/images/too_many_attempts.png)
