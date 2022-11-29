@@ -18,8 +18,8 @@ Using freeze time to mock date and time, so that the test always returns determi
 def test_encode_jwt_when_called_a_jwt_token_of_expiry_30_minutes_is_returned():
     iat = datetime.now(timezone.utc)
     expected_message = TokenMessage(iss="asmis", sub="", iat=get_int_from_datetime(iat),
-                           exp=get_int_from_datetime(
-                               iat + timedelta(minutes=30)))
+                                    exp=get_int_from_datetime(
+                                        iat + timedelta(minutes=30)))
     instance.encode = Mock()
     encode_jwt()
     instance.encode.assert_called_with(expected_message.dict(), ANY, alg='RS256')
