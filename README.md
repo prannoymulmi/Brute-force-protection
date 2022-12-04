@@ -17,7 +17,7 @@ python -m venv ./venv
 # activates virtual environment; this is on Mac or Linux
 source ./venv/bin/activate 
 
-# This is for windows
+# This is for windows (Using Powershell)
 .\venv\Scripts\activate.bat 
 
 # upgrade pip to get the latest packages
