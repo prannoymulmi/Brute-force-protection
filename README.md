@@ -41,8 +41,7 @@ the available endpoints will be displayed.
 ```json
 {
   "username": "user1",
-  "password": "V3ryG00dPassw0rd?!",
-  "email": "user1@hello.com"
+  "password": "V3ryG00dPassw0rd?!"
 }
 ```
 ### Configuration
